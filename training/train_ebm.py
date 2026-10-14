@@ -51,6 +51,13 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     )
     p.add_argument("--test-size", type=float, default=0.2, help="share of projects held out")
     p.add_argument("--out", type=Path, default=Path("model.json"))
+    p.add_argument(
+        "--detail",
+        choices=["minimal", "interpretable", "mergeable", "all"],
+        default="minimal",
+        help="to_json() detail; minimal holds all the app needs to predict and is "
+        "about 15x smaller than all",
+    )
     p.add_argument("--metrics-out", type=Path, default=None, help="defaults to <out>.metrics.json")
     return p.parse_args(argv)
 
@@ -126,7 +133,7 @@ def main(argv: list[str] | None = None) -> int:
     # Final model on every project.
     model = make_model(args.task).fit(X, y)
     args.out.parent.mkdir(parents=True, exist_ok=True)
-    model.to_json(args.out, detail="all", indent=2)
+    model.to_json(args.out, detail=args.detail, indent=None)
 
     metrics_out = args.metrics_out or args.out.with_suffix(".metrics.json")
     metrics_out.write_text(json.dumps(metrics, indent=2) + "\n")
