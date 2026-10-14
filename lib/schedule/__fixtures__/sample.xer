@@ -1,0 +1,26 @@
+ERMHDR	21.12	2026-01-19	Project	admin	admin	dbxDatabaseNoName	Project Management	PKR
+%T	PROJECT
+%F	proj_id	proj_short_name	clndr_id	plan_start_date	plan_end_date	last_recalc_date	scd_end_date
+%R	100	REV-DEMO	1	2026-01-05 08:00	2026-03-31 17:00	2026-01-19 08:00	2026-02-27 17:00
+%T	CALENDAR
+%F	clndr_id	default_flag	clndr_name	proj_id	clndr_type	day_hr_cnt	week_hr_cnt	clndr_data
+%R	1	Y	Six day week		CA_Base	8	48	(0||CalendarData()((0||DaysOfWeek()((0||1()())(0||2()((0||0(s|08:00|f|12:00)())(0||1(s|13:00|f|17:00)())))(0||3()((0||0(s|08:00|f|12:00)())(0||1(s|13:00|f|17:00)())))(0||4()((0||0(s|08:00|f|12:00)())(0||1(s|13:00|f|17:00)())))(0||5()((0||0(s|08:00|f|12:00)())(0||1(s|13:00|f|17:00)())))(0||6()((0||0(s|08:00|f|12:00)())(0||1(s|13:00|f|17:00)())))(0||7()((0||0(s|08:00|f|12:00)())(0||1(s|13:00|f|17:00)())))))(0||VIEW(ShowTotal|Y)())(0||Exceptions()((0||0(d|46059)())))))
+%T	PROJWBS
+%F	wbs_id	proj_id	wbs_short_name	wbs_name	parent_wbs_id	proj_node_flag
+%R	10	100	REV-DEMO	Demo project		Y
+%R	11	100	CIV	Civil works	10	N
+%T	TASK
+%F	task_id	proj_id	wbs_id	clndr_id	task_code	task_name	task_type	status_code	phys_complete_pct	target_drtn_hr_cnt	remain_drtn_hr_cnt	target_start_date	target_end_date	act_start_date	act_end_date	early_start_date	early_end_date
+%R	1	100	11	1	A1000	Mobilisation	TT_Task	TK_Complete	100	40	0	2026-01-05 08:00	2026-01-09 17:00	2026-01-05 08:00	2026-01-09 17:00		
+%R	2	100	11	1	A1010	Excavation	TT_Task	TK_Active	40	80	48	2026-01-12 08:00	2026-01-23 17:00	2026-01-12 08:00		2026-01-19 08:00	2026-01-24 17:00
+%R	3	100	11	1	A1020	Foundations	TT_Task	TK_NotStart	0	120	120	2026-01-14 08:00	2026-01-30 17:00			2026-01-21 08:00	2026-02-06 17:00
+%R	4	100	10	1	A1030	Handover	TT_FinMile	TK_NotStart	0	0	0		2026-01-30 17:00				2026-02-06 17:00
+%R	5	100	10	1	LOE1	Site management	TT_LOE	TK_Active	0	200	120	2026-01-05 08:00	2026-01-30 17:00	2026-01-05 08:00			
+%T	TASKPRED
+%F	task_pred_id	task_id	pred_task_id	proj_id	pred_proj_id	pred_type	lag_hr_cnt
+%R	1	2	1	100	100	PR_FS	0
+%R	2	3	2	100	100	PR_SS	16
+%R	3	4	3	100	100	PR_FS	0
+%R	4	4	2	100	100	PR_FF	8
+%R	5	5	1	100	100	PR_SS	0
+%E

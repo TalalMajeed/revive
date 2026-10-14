@@ -1,0 +1,75 @@
+# Retrains the EBM once a month on GitHub Actions (free minutes, no paid API).
+#
+# Harmless until data exists: if training/data/snapshots.csv is missing the
+# job stops after the check step. training/data/ is git-ignored so client
+# rows are never committed, so a step that fetches the anonymised export
+# (e.g. from Supabase storage with a repository secret) goes before the check
+# once the dataset exists. The trained model is uploaded as a build
+# artifact for review. Committing it into the app (and only when it beats the
+# current model on held-out projects) comes later.
+name: Train model
+
+on:
+  schedule:
+    - cron: "0 3 1 * *" # 03:00 UTC on the 1st of each month
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: train-model
+  cancel-in-progress: false
+
+jobs:
+  train:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: training
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check for training data
+        id: data
+        run: |
+          if [ -s data/snapshots.csv ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "No training/data/snapshots.csv yet; skipping training." >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - uses: actions/setup-python@v5
+        if: steps.data.outputs.present == 'true'
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: training/requirements.txt
+
+      - name: Install dependencies
+        if: steps.data.outputs.present == 'true'
+        run: pip install -r requirements.txt
+
+      - name: Train
+        if: steps.data.outputs.present == 'true'
+        run: |
+          python train_ebm.py \
+            --data data/snapshots.csv \
+            --target late \
+            --group project_id \
+            --out out/model.json
+          {
+            echo '### Held-out metrics'
+            echo '```json'
+            cat out/model.metrics.json
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/upload-artifact@v4
+        if: steps.data.outputs.present == 'true'
+        with:
+          name: model-${{ github.run_number }}
+          path: training/out/
+          retention-days: 90
