@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Project xmlns="http://schemas.microsoft.com/project">
+  <Name>Demo.xml</Name>
+  <Title>Revive demo block</Title>
+  <StartDate>2026-01-05T08:00:00</StartDate>
+  <FinishDate>2026-02-06T17:00:00</FinishDate>
+  <StatusDate>2026-01-19T08:00:00</StatusDate>
+  <MinutesPerDay>480</MinutesPerDay>
+  <Tasks>
+    <Task>
+      <UID>0</UID><ID>0</ID><Name>Revive demo block</Name><Summary>1</Summary>
+      <Duration>PT200H0M0S</Duration>
+    </Task>
+    <Task>
+      <UID>1</UID><ID>1</ID><Name>Civil works</Name><WBS>1</WBS><Summary>1</Summary>
+      <Duration>PT160H0M0S</Duration>
+    </Task>
+    <Task>
+      <UID>2</UID><ID>2</ID><Name>Mobilisation</Name><WBS>1.1</WBS><Summary>0</Summary><Milestone>0</Milestone>
+      <Duration>PT40H0M0S</Duration><RemainingDuration>PT0H0M0S</RemainingDuration>
+      <PercentComplete>100</PercentComplete>
+      <Start>2026-01-05T08:00:00</Start><Finish>2026-01-09T17:00:00</Finish>
+      <ActualStart>2026-01-05T08:00:00</ActualStart><ActualFinish>2026-01-09T17:00:00</ActualFinish>
+    </Task>
+    <Task>
+      <UID>3</UID><ID>3</ID><Name>Excavation</Name><WBS>1.2</WBS><Summary>0</Summary><Milestone>0</Milestone>
+      <Duration>PT80H0M0S</Duration><RemainingDuration>PT48H0M0S</RemainingDuration>
+      <PercentComplete>40</PercentComplete>
+      <Start>2026-01-12T08:00:00</Start><Finish>2026-01-24T17:00:00</Finish>
+      <ActualStart>2026-01-12T08:00:00</ActualStart>
+      <PredecessorLink><PredecessorUID>2</PredecessorUID><Type>1</Type><LinkLag>0</LinkLag><LagFormat>7</LagFormat></PredecessorLink>
+    </Task>
+    <Task>
+      <UID>4</UID><ID>4</ID><Name>Foundations</Name><WBS>1.3</WBS><Summary>0</Summary><Milestone>0</Milestone>
+      <Duration>PT120H0M0S</Duration>
+      <PercentComplete>0</PercentComplete>
+      <Start>2026-01-21T08:00:00</Start><Finish>2026-02-06T17:00:00</Finish>
+      <PredecessorLink><PredecessorUID>3</PredecessorUID><Type>3</Type><LinkLag>9600</LinkLag><LagFormat>7</LagFormat></PredecessorLink>
+    </Task>
+    <Task>
+      <UID>5</UID><ID>5</ID><Name>Handover</Name><WBS>2</WBS><Summary>0</Summary><Milestone>1</Milestone>
+      <Duration>PT0H0M0S</Duration>
+      <Start>2026-02-06T17:00:00</Start><Finish>2026-02-06T17:00:00</Finish>
+      <PredecessorLink><PredecessorUID>4</PredecessorUID><Type>1</Type><LinkLag>0</LinkLag><LagFormat>7</LagFormat></PredecessorLink>
+      <PredecessorLink><PredecessorUID>3</PredecessorUID><Type>0</Type><LinkLag>4800</LinkLag><LagFormat>7</LagFormat></PredecessorLink>
+      <PredecessorLink><PredecessorUID>1</PredecessorUID><Type>1</Type><LinkLag>0</LinkLag><LagFormat>7</LagFormat></PredecessorLink>
+    </Task>
+  </Tasks>
+</Project>

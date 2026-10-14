@@ -1,26 +1,122 @@
 @import "tailwindcss";
 
+/* Site-office instrument: drafting paper, ink, ruled lines, one signal
+   colour for risk. See DESIGN.md. Light only: used in daylight. */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --paper: #f5f1e8;
+  --panel: #ece6d8;
+  --sheet: #fbf9f4;
+  --ink: #1d1c19;
+  --ink-2: #57524a;
+  --ink-3: #6f695e;
+  --rule: #d6cfbf;
+  --rule-strong: #b9b09c;
+  --risk: #b93c0a;
+  --risk-wash: #f6e2d6;
+  --warn: #8f5a06;
+  --warn-wash: #f3e7c8;
+  --ok: #3d6b4f;
+  --ok-wash: #dfeadf;
+  --plan: #8a8272;
+  color-scheme: light;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-paper: var(--paper);
+  --color-panel: var(--panel);
+  --color-sheet: var(--sheet);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-rule: var(--rule);
+  --color-rule-strong: var(--rule-strong);
+  --color-risk: var(--risk);
+  --color-risk-wash: var(--risk-wash);
+  --color-warn: var(--warn);
+  --color-warn-wash: var(--warn-wash);
+  --color-ok: var(--ok);
+  --color-ok-wash: var(--ok-wash);
+  --color-plan: var(--plan);
+  --font-sans: var(--font-plex-sans);
+  --font-mono: var(--font-plex-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  background: var(--paper);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-plex-sans), system-ui, sans-serif;
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--ink);
+  color: var(--sheet);
+}
+
+:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+input,
+select,
+textarea {
+  caret-color: var(--risk);
+  accent-color: var(--ink);
+}
+
+a {
+  text-underline-offset: 3px;
+}
+
+* {
+  scrollbar-color: var(--rule-strong) transparent;
+}
+
+/* Form controls share one vocabulary. In the components layer so
+   utilities such as w-20 can still size them. */
+@layer components {
+  .control {
+    width: 100%;
+    min-height: 2.5rem;
+    border: 1px solid var(--rule-strong);
+    border-radius: 4px;
+    background: var(--sheet);
+    padding: 0.5rem 0.65rem;
+    font-size: 0.9375rem;
+    color: var(--ink);
+    transition: border-color 150ms ease-out, box-shadow 150ms ease-out;
+  }
+  .control:hover {
+    border-color: var(--ink-3);
+  }
+  .control:focus {
+    outline: none;
+    border-color: var(--ink);
+    box-shadow: 0 0 0 1px var(--ink);
+  }
+  .control[aria-invalid="true"] {
+    border-color: var(--risk);
+  }
+  .control::placeholder {
+    color: var(--ink-3);
+  }
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  html,
+  body {
+    background: white;
+  }
+  @page {
+    margin: 16mm 14mm;
+  }
 }

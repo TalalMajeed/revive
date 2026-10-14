@@ -42,6 +42,8 @@ export interface SimulateOptions {
   iterations?: number;
   /** Fixes the random draws, for tests and for reproducing a logged forecast. */
   seed?: number;
+  /** Also return every run's finish (sorted), for drawing the distribution. */
+  keepFinishes?: boolean;
 }
 
 export interface SimulationResult {
@@ -57,6 +59,8 @@ export interface SimulationResult {
   finishDays: { deterministic: number; p10: number; p50: number; p90: number };
   /** Activity id -> share of runs in which it was on the critical path. */
   criticality: Record<string, number>;
+  /** Every run's finish in working days, sorted; only with keepFinishes. */
+  finishes?: number[];
 }
 
 export const DEFAULT_SPREAD = { min: 0.9, max: 1.3 } as const;
@@ -141,6 +145,7 @@ export function simulate(options: SimulateOptions): SimulationResult {
     p90: toDate(p90),
     finishDays: { deterministic, p10, p50, p90 },
     criticality,
+    finishes: options.keepFinishes ? Array.from(finishes) : undefined,
   };
 }
 
